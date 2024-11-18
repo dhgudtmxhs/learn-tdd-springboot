@@ -1,4 +1,4 @@
-package com.example.tdd.service;
+package com.example.tdd.service.test;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;

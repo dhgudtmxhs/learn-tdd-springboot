@@ -1,4 +1,4 @@
-package com.example.tdd.service;
+package com.example.tdd.service.test;
 
 public class CalculatorService {
 
