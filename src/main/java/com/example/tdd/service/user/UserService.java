@@ -1,4 +1,4 @@
-package com.example.tdd.service.test.user;
+package com.example.tdd.service.user;
 
 import com.example.tdd.domain.user.User;
 import com.example.tdd.repository.user.UserRepository;

@@ -1,11 +1,9 @@
-package com.example.tdd.service.test.user;
+package com.example.tdd.service.user;
 
 import com.example.tdd.domain.user.User;
 import com.example.tdd.repository.user.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
