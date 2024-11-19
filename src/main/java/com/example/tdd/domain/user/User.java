@@ -8,9 +8,9 @@ import lombok.Setter;
 
 @Entity
 @Getter
-@NoArgsConstructor
 //@Setter 엔티티는 불변 지향
-//@Table(name=~)
+@NoArgsConstructor
+@Table(name = "users") // spirngboot의 spring.jpa.hibernate.ddl-auto 기본 설정은 create-drop(테스트 환경)
 public class User {
 
     @Id
