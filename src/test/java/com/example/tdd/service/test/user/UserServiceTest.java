@@ -14,7 +14,7 @@ import static org.mockito.Mockito.*;
 // Stub을 객체 : 상태 검증(state verification)
 
 // Mock 객체는 메서드 호출 여부와 호출된 방식(횟수, 인자 등)을 검증하는 데 중점을 둔다.
-// Stub 객체는 특정 상황에서 어떤 데이터를 반환하거나 상태를 유지하는 데 초점을 둔다.
+// Stub 객체는 특정 상황에서 어떤 데이터를 반환하거나 상태를 검증하는 데 초점을 둔다.
 public class UserServiceTest {
 
     private UserRepository userRepository;
@@ -29,7 +29,7 @@ public class UserServiceTest {
 
     //Mock Test
     @Test
-    void testFindByUserName() {
+    void testFindByUserNameMock() {
         // Given
         String name = "ohs";
         User mockUser = User.builder().
@@ -44,8 +44,28 @@ public class UserServiceTest {
         User foundUser = userService.findByUsername(name);
 
         // Then
-        assertEquals(name, foundUser.getUserName()); // 결과 검증
-        verify(userRepository, times(1)).findByUserName(name); // findByUserName 호출 검증
+        assertEquals(name, foundUser.getUserName()); // 메서드 호출 검증
+        verify(userRepository, times(1)).findByUserName(name); // 호출 여부와 호출 회수 검증
+    }
+
+    // Stub Test
+    @Test
+    void testFindByUserNameStub() {
+        // Given
+        String name = "ohs";
+        User stubUser = User.builder()
+                .userName(name)
+                .email("ohs@gmail.com")
+                .build();
+
+        userRepository.save(stubUser); // Stub에 데이터 저장
+
+        // When
+        User foundUser = userService.findByUsername(name);
+
+        // Then
+        assertEquals(name, foundUser.getUserName()); // 반환된 데이터나 객체의 상태 검증
+        assertEquals("ohs@gmail.com", foundUser.getEmail()); // ''
     }
 
 }
