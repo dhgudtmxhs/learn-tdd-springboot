@@ -4,6 +4,9 @@ import com.example.tdd.domain.user.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -32,41 +35,19 @@ public class userServiceLogicTest {
         assertTrue(isValid);
     }
 
-    @Test
+    @ParameterizedTest // 매개변수를 받는 테스트 메서드를 반복 실행할 수 있게 함
     @DisplayName("사용자 이름 유효성 검증 - 실패")
-    void testIsValidUserName_Invalid() {
-        assertAll(
-                () -> {
-                    // Given
-                    String invalidUserName = "a";
+    @CsvSource({ // Given 매개변수 전달
+            "'a', 너무짧은 userName",
+            "'', userName에 Null 불가능",
+            "'invalid!@#', userName에 특수문자 불가능"
+    })
+    void testIsValidUserName_Invalid(String invalidUserName, String errorMessage) {
+        // When
+        boolean result = userService.isValidUserName(invalidUserName);
 
-                    // When
-                    boolean result = userService.isValidUserName(invalidUserName);
-
-                    // Then
-                    assertFalse(result, "너무짧은 userName");
-                },
-                () -> {
-                    // Given
-                    String invalidUserName = null;
-
-                    // When
-                    boolean result = userService.isValidUserName(invalidUserName);
-
-                    // Then
-                    assertFalse(result, "userName에 Null 불가능");
-                },
-                () -> {
-                    // Given
-                    String invalidUserName = "invalid!@#";
-
-                    // When
-                    boolean result = userService.isValidUserName(invalidUserName);
-
-                    // Then
-                    assertFalse(result, "userName에 특수문자 불가능");
-                }
-        );
+        // Then
+        assertFalse(result, errorMessage);
     }
 
     @Test
