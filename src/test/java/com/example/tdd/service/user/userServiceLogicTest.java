@@ -35,27 +35,70 @@ public class userServiceLogicTest {
     @Test
     @DisplayName("사용자 이름 유효성 검증 - 실패")
     void testIsValidUserName_Invalid() {
-        assertFalse(userService.isValidUserName("a")); // 짧음
-        assertFalse(userService.isValidUserName(null)); // null
-        assertFalse(userService.isValidUserName("invalid!@#")); // 특수 문자 포함
+        assertAll(
+                () -> {
+                    // Given
+                    String invalidUserName = "a";
+
+                    // When
+                    boolean result = userService.isValidUserName(invalidUserName);
+
+                    // Then
+                    assertFalse(result, "너무짧은 userName");
+                },
+                () -> {
+                    // Given
+                    String invalidUserName = null;
+
+                    // When
+                    boolean result = userService.isValidUserName(invalidUserName);
+
+                    // Then
+                    assertFalse(result, "userName에 Null 불가능");
+                },
+                () -> {
+                    // Given
+                    String invalidUserName = "invalid!@#";
+
+                    // When
+                    boolean result = userService.isValidUserName(invalidUserName);
+
+                    // Then
+                    assertFalse(result, "userName에 특수문자 불가능");
+                }
+        );
     }
 
     @Test
     @DisplayName("유효한 사용자 생성")
     void testCreateUser_Valid() {
-        User user = userService.createUser("validUser", "validUser@example.com");
-        assertNotNull(user);
-        assertEquals("validUser", user.getUserName());
-        assertEquals("validUser@example.com", user.getEmail());
+        // Given
+        String validUserName = "validUser";
+        String email = "validUser@example.com";
+
+        // When
+        User user = userService.createUser(validUserName, email);
+
+        // Then
+        assertNotNull(user, "User는 null일 수 없음");
+        assertEquals(validUserName, user.getUserName(), "UserName이 일치해야 함");
+        assertEquals(email, user.getEmail(), "Eamil이 일치해야 함");
     }
 
     @Test
     @DisplayName("잘못된 사용자 생성 - 예외 발생")
     void testCreateUser_Invalid() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            userService.createUser("invalid@@USER!!", "email@example.com");
-        });
-    }
+        // Given
+        String invalidUserName = "invalid@@USER!!";
+        String email = "email@example.com";
 
+        // When
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            userService.createUser(invalidUserName, email);
+        });
+
+        // Then
+        assertEquals("Invalid username", exception.getMessage(), "예외 메시지가 예상과 일치하는지 확인");
+    }
 
 }
