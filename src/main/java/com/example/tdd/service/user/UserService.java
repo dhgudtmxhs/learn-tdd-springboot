@@ -34,4 +34,18 @@ public class UserService {
                 .build();
     }
 
+    // 일반 사용자 리소스
+    public String getUserResource() {
+        return "Resource for user";
+    }
+
+    // 관리자 리소스
+    public String getAdminResource() {
+        // return "Incorrect Resource";
+        return "Resource for admin";
+    }
+
+
+
+
 }
