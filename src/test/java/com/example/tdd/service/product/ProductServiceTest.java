@@ -67,7 +67,8 @@ class ProductServiceTest {
         double totalDiscountRate = productService.calculateTotalDiscountRate(product, userDiscountRate);
 
         // then
-        assertEquals(0.3, totalDiscountRate, "카테고리 10% + 사용자 20% 할인율 합계는 30%여야 한다.");
+        double epsilon = 1e-9; // 허용 오차
+        assertEquals(0.3, totalDiscountRate, epsilon, "카테고리 10% + 사용자 20% 할인율 합계는 30%이어야 한다.");
     }
 
     @Test
