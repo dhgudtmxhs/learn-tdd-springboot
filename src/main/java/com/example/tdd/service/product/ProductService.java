@@ -63,4 +63,37 @@ public class ProductService {
                 .discountRate(product.getDiscountRate())
                 .build();
     }
+
+    // 재고 감소 후 저장
+    public Product reduceStockAndSave(Product product, int quantity) {
+        Product updatedProduct = reduceStock(product, quantity);
+        return productRepository.save(updatedProduct); // 감소된 재고 정보 저장
+    }
+
+    // 카테고리 할인 후 저장
+    public Product applyCategoryDiscountAndSave(Product product) {
+        double discountedPrice = calculateCategoryDiscountedPrice(product);
+        Product discountedProduct = Product.builder()
+                .name(product.getName())
+                .category(product.getCategory())
+                .quantity(product.getQuantity())
+                .price(discountedPrice) // 할인 적용된 가격
+                .discountRate(CATEGORY_DISCOUNTS.getOrDefault(product.getCategory(), 0.0))
+                .build();
+        return productRepository.save(discountedProduct);
+    }
+
+    // 사용자 할인 후 저장
+    public Product applyUserDiscountAndSave(Product product, double userDiscountRate) {
+        double discountedPrice = calculateUserDiscountedPrice(product, userDiscountRate);
+        Product discountedProduct = Product.builder()
+                .name(product.getName())
+                .category(product.getCategory())
+                .quantity(product.getQuantity())
+                .price(discountedPrice) // 할인 적용된 가격
+                .discountRate(userDiscountRate)
+                .build();
+        return productRepository.save(discountedProduct);
+    }
+
 }
