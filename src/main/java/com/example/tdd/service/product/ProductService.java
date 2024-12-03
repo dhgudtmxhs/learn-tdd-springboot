@@ -1,6 +1,7 @@
 package com.example.tdd.service.product;
 
 import com.example.tdd.domain.product.Product;
+import com.example.tdd.repository.product.ProductRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -8,6 +9,12 @@ import java.util.Map;
 
 @Service
 public class ProductService {
+
+    private final ProductRepository productRepository;
+
+    public ProductService(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
 
     private static final Map<String, Double> CATEGORY_DISCOUNTS = new HashMap<>();
 
